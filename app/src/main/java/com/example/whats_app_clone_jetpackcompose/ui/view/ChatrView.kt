@@ -1,6 +1,9 @@
 package com.example.whats_app_clone_jetpackcompose.ui.view
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -11,20 +14,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.whats_app_clone_jetpackcompose.Data.Chat
 import com.example.whats_app_clone_jetpackcompose.Data.DummyData
+import com.example.whats_app_clone_jetpackcompose.DetailsActivity
+import com.example.whats_app_clone_jetpackcompose.HomeActivity
 
 @Composable
 fun ChatView() {
     val dummyChat = DummyData.listChat
     LazyColumn(){
         items(dummyChat.size){index->
-            ChatItem(dummyChat[index])
+            val mContext = LocalContext.current
+            ChatItem(dummyChat[index], index,mContext)
 
         }
     }
@@ -32,9 +40,15 @@ fun ChatView() {
 }
 
 
+fun openChat(index:Int, mContext: Context){
+
+    val intent = Intent(mContext, DetailsActivity::class.java)
+    intent.putExtra("extra_chatid", index)
+    mContext.startActivity(intent)
+}
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun ChatItem(chat:Chat) {
+fun ChatItem(chat:Chat, index:Int, mContext:Context) {
     Row(Modifier.padding(horizontal=16.dp, vertical = 8.dp)) {
       Image(painter = rememberImagePainter(data = chat.imageUrl),
           contentDescription = null,
@@ -47,7 +61,8 @@ fun ChatItem(chat:Chat) {
         Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween) {
 
-            Text(chat.name, fontWeight = FontWeight.SemiBold , fontSize = 17.sp)
+            Text(chat.name, fontWeight = FontWeight.SemiBold , fontSize = 17.sp,
+            modifier = Modifier.clickable { openChat(index, mContext)})
             Spacer(modifier = Modifier.height(8.dp))
             Text(chat.time , fontWeight = FontWeight.Light, fontSize = 12.sp)
 

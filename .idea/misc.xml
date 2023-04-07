@@ -3,9 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/compose-model-1680885386364.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/camera.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_add_call.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_camera.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_create.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_message.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_missed_call.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_notes.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_person.xml" value="0.1" />
       </map>
     </option>
   </component>
