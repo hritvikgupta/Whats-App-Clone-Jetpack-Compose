@@ -3,6 +3,7 @@ package com.example.whats_app_clone_jetpackcompose
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Space
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.example.whats_app_clone_jetpackcompose.Data.Chat
@@ -50,7 +52,7 @@ class DetailsActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val chatID = intent.getIntExtra("extra_chatid", 0)
-                    DetailsView(chatID)
+//                    DetailsView(chatID)
                 }
             }
         }
@@ -58,17 +60,17 @@ class DetailsActivity : ComponentActivity() {
 }
 
 @Composable
-fun DetailsView(chatID:Int) {
+fun DetailsView(chatID:Int, onHome:()-> Unit) {
     val chat = DummyData.listChat.filter { it.id== chatID }[0]
     Scaffold(backgroundColor = Color(0xFFEDEDED)
-    , topBar = {MessageTopBar(chat = chat)},
+    , topBar = {MessageTopBar(chat = chat,onHome)},
     bottomBar =  {MessageBox()},
     content = {MessageList()})
 }
 
 @Composable
-fun MessageTopBar(chat: Chat) {
-    val navController= rememberNavController()
+fun MessageTopBar(chat: Chat,onHome:()-> Unit) {
+//    val navController= rememberNavController()
     TopAppBar(
         title = {
             Row{
@@ -114,7 +116,8 @@ fun MessageTopBar(chat: Chat) {
                     .padding(start = 4.dp, end = 0.dp)
                     .fillMaxWidth()
             ){
-                IconButton(onClick = {navController.navigateUp()}) {
+                IconButton(onClick =onHome) {
+                    Toast(LocalContext.current)
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                 }
 

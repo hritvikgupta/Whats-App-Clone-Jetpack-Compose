@@ -1,5 +1,6 @@
 package com.example.whats_app_clone_jetpackcompose
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,14 +12,22 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.whats_app_clone_jetpackcompose.Navigations.Screen
 import com.example.whats_app_clone_jetpackcompose.composable.AppTabs
 import com.example.whats_app_clone_jetpackcompose.composable.AppTopBar
 import com.example.whats_app_clone_jetpackcompose.ui.theme.WhatsAppCloneJetpackComposeTheme
 import com.example.whats_app_clone_jetpackcompose.ui.view.ChatView
 import com.example.whats_app_clone_jetpackcompose.ui.view.ContactView
+import com.example.whats_app_clone_jetpackcompose.ui.view.DetailStartActivity
 import com.example.whats_app_clone_jetpackcompose.ui.view.StatusView
 
 enum class HomeTab{
@@ -30,7 +39,14 @@ class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+//            val NavController  = rememberNavController()
+//            NavHost(navController = NavController, startDestination = Screen.HomeScreen.route){
+//                composable(Screen.HomeScreen.route){
+//
+//                }
+//            }
             WhatsAppCloneJetpackComposeTheme {
+
                 actionBar?.setDisplayHomeAsUpEnabled(true)
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -38,14 +54,41 @@ class HomeActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
 
                 ) {
-                    HomeView()
+                    Navigation()
                 }
             }
         }
     }
 
+//    @Composable
+//    fun Navigation() {
+//
+//        val navController = rememberNavController()
+//
+//        NavHost(navController = navController as NavHostController, startDestination = Screen.Home.route) {
+//
+//            // First route : Home
+//            composable("home") {
+//
+//                // Lay down the Home Composable
+//                // and pass the navController
+//                HomeView(navController = navController)
+//            }
+//
+//            // Another Route : Profile
+//            composable(Screen.details.route) {
+//                // Profile Screen
+////                val intent = Intent(LocalContext.current, DetailsActivity::class.java)
+////                intent.putExtra("extra_chatid", 0)
+////                LocalContext.current.startActivity(intent)
+//                DetailStartActivity(onHome = {navController.popBackStack()})
+//            }
+//
+//        }
+//    }
+
     @Composable
-    fun HomeView() {
+     fun HomeView(navController:NavController) {
         var showMenu by remember { mutableStateOf(false)}
         var tabSelected by remember { mutableStateOf(HomeTab.CHATS)}
 
@@ -129,17 +172,7 @@ class HomeActivity : ComponentActivity() {
                    onTabSelected = {tabSelected = it}
                )
                when(tabSelected){
-                   HomeTab.CHATS ->{
-                       ChatView()
-                       FloatingActionButton(onClick = { /*TODO*/ }, backgroundColor = Color.Green) {
-                           Icon(
-                               painter = painterResource(id = R.drawable.ic_message),
-                               contentDescription = null,
-                               tint = Color.White
-                           )
-
-                       }
-                    }
+                   HomeTab.CHATS ->ChatView(navController)
                    HomeTab.STATUS -> StatusView()
                    HomeTab.CONTACTS -> ContactView()
                }
